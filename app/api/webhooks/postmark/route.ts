@@ -25,6 +25,7 @@ export async function POST(request: Request) {
           response_due: parseEbuyDate(req.dueBy),
           raw_email: payload.TextBody ?? null,
           parsed_fields: payload,
+          updated_at: new Date().toISOString(),
         },
         { onConflict: 'rfq_number' }
       )
