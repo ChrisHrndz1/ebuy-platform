@@ -1,8 +1,9 @@
 import { supabaseAdmin } from './supabase-server'
+import { computeSoftScore } from './soft-score'
 
 export interface GateResult {
   gate: string
-  passed: boolean | null // null = insufficient data to judge
+  passed: boolean | null
   detail: string
 }
 
@@ -18,7 +19,6 @@ export async function evaluateHardGates(opportunity: {
 }): Promise<QualificationResult> {
   const gates: GateResult[] = []
 
-  // Gate 1: Vehicle match
   let vehicleGate: GateResult
   if (!opportunity.contract_number) {
     vehicleGate = {
@@ -49,7 +49,6 @@ export async function evaluateHardGates(opportunity: {
   }
   gates.push(vehicleGate)
 
-  // Gate 2: NAICS match
   let naicsGate: GateResult
   if (!opportunity.naics_code) {
     naicsGate = {
@@ -74,7 +73,6 @@ export async function evaluateHardGates(opportunity: {
   }
   gates.push(naicsGate)
 
-  // Roll gates up into a single verdict
   const anyFailed = gates.some((g) => g.passed === false)
   const anyUnknown = gates.some((g) => g.passed === null)
 
@@ -95,12 +93,29 @@ export async function evaluateHardGates(opportunity: {
   return { verdict, hardGateResults: gates, rationale }
 }
 
-export async function saveVerdict(opportunityId: string, result: QualificationResult) {
+export async function saveVerdict(
+  opportunityId: string,
+  result: QualificationResult,
+  opportunity: { title: string | null; raw_email: string | null; contract_number: string | null }
+) {
+  let softScore: number | null = null
+  let combinedRationale = result.rationale
+
+  // Skip soft scoring for hard-disqualified opportunities — no point assessing fit on something ineligible
+  if (result.verdict !== 'pass') {
+    const soft = await computeSoftScore(opportunity)
+    if (soft) {
+      softScore = soft.score
+      combinedRationale = result.rationale + ' | Fit assessment: ' + soft.rationale
+    }
+  }
+
   await supabaseAdmin.from('verdicts').insert({
     opportunity_id: opportunityId,
     verdict: result.verdict,
     hard_gate_results: result.hardGateResults,
-    rationale: result.rationale,
-    engine_version: 'hard-gates-v1',
+    soft_score: softScore,
+    rationale: combinedRationale,
+    engine_version: 'hard-gates-v1+soft-score-v1',
   })
 }

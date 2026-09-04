@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     }
 
     const result = await evaluateHardGates(data)
-    await saveVerdict(data.id, result)
+    await saveVerdict(data.id, result, data)
   }
 
   return NextResponse.json({ received: true, parsed: requests.length })

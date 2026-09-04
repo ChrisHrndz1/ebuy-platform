@@ -113,6 +113,11 @@ export default async function Home({
                     {verdict.verdict.toUpperCase()}
                   </span>
                 )}
+                {verdict?.soft_score !== null && verdict?.soft_score !== undefined && (
+                  <span className="text-xs text-gray-500">
+                    Fit: {verdict.soft_score}/100
+                  </span>
+                )}
                 <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">
                   {opp.status ?? 'Unknown'}
                 </span>
