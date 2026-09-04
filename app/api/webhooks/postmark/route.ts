@@ -1,6 +1,7 @@
 import { supabaseAdmin } from '@/lib/supabase-server'
 import { NextResponse } from 'next/server'
 import { parseEbuyRequests, parseEbuyDate, parseContractNumber } from '@/lib/parse-ebuy-email'
+import { evaluateHardGates, saveVerdict } from '@/lib/qualification-engine'
 
 export async function POST(request: Request) {
   const payload = await request.json()
@@ -14,7 +15,7 @@ export async function POST(request: Request) {
   }
 
   for (const req of requests) {
-    const { error } = await supabaseAdmin
+    const { data, error } = await supabaseAdmin
       .from('opportunities')
       .upsert(
         {
@@ -29,8 +30,16 @@ export async function POST(request: Request) {
         },
         { onConflict: 'rfq_number' }
       )
+      .select()
+      .single()
 
-    if (error) console.error(`Insert error for ${req.requestId}:`, error.message)
+    if (error) {
+      console.error('Insert error for ' + req.requestId + ':', error.message)
+      continue
+    }
+
+    const result = await evaluateHardGates(data)
+    await saveVerdict(data.id, result)
   }
 
   return NextResponse.json({ received: true, parsed: requests.length })

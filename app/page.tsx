@@ -39,6 +39,18 @@ export default async function Home({
     return <div className="p-8 text-red-600">Error loading opportunities: {error.message}</div>
   }
 
+  const { data: verdictsData } = await supabaseAdmin
+    .from('verdicts')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  const latestVerdictByOpportunity = new Map()
+  verdictsData?.forEach((v) => {
+    if (!latestVerdictByOpportunity.has(v.opportunity_id)) {
+      latestVerdictByOpportunity.set(v.opportunity_id, v)
+    }
+  })
+
   const { data: allContracts } = await supabaseAdmin
     .from('opportunities')
     .select('contract_number')
@@ -77,6 +89,12 @@ export default async function Home({
           const cardClass = 'border rounded-lg p-4 flex justify-between items-start' + (opp.reviewed ? ' opacity-50' : '')
           const badgeClass = 'text-xs px-2 py-1 rounded-full ' + badge.color
 
+          const verdict = latestVerdictByOpportunity.get(opp.id)
+          const verdictClass = verdict?.verdict === 'pursue' ? 'bg-green-100 text-green-800'
+            : verdict?.verdict === 'review' ? 'bg-orange-100 text-orange-800'
+            : verdict?.verdict === 'pass' ? 'bg-gray-200 text-gray-600'
+            : 'bg-gray-100 text-gray-400'
+
           return (
             <div key={opp.id} className={cardClass}>
               <div>
@@ -87,6 +105,14 @@ export default async function Home({
                 </div>
               </div>
               <div className="text-right flex flex-col items-end gap-2">
+                {verdict && (
+                  <span
+                    className={'text-xs px-2 py-1 rounded-full font-semibold ' + verdictClass}
+                    title={verdict.rationale}
+                  >
+                    {verdict.verdict.toUpperCase()}
+                  </span>
+                )}
                 <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">
                   {opp.status ?? 'Unknown'}
                 </span>
