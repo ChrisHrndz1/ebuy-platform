@@ -1,25 +1,36 @@
 import { supabaseAdmin } from '@/lib/supabase-server'
 import { NextResponse } from 'next/server'
+import { parseEbuyRequests, parseEbuyDate, parseContractNumber } from '@/lib/parse-ebuy-email'
 
 export async function POST(request: Request) {
   const payload = await request.json()
 
-  // Log the full raw payload for now so we can see real Postmark data
-  console.log('Postmark inbound payload:', JSON.stringify(payload, null, 2))
+  const contractNumber = parseContractNumber(payload.Subject ?? '')
+  const requests = parseEbuyRequests(payload.HtmlBody ?? '')
 
-  const { error } = await supabaseAdmin
-    .from('opportunities')
-    .insert({
-      rfq_number: `TEMP-${Date.now()}`, // placeholder until real parsing exists
-      title: payload.Subject ?? null,
-      raw_email: payload.TextBody ?? payload.HtmlBody ?? null,
-      parsed_fields: payload, // store everything for now
-    })
-
-  if (error) {
-    console.error('Insert error:', error.message)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  if (requests.length === 0) {
+    console.log('No parseable requests found in this email:', payload.Subject)
+    return NextResponse.json({ received: true, parsed: 0 })
   }
 
-  return NextResponse.json({ received: true })
+  for (const req of requests) {
+    const { error } = await supabaseAdmin
+      .from('opportunities')
+      .upsert(
+        {
+          rfq_number: req.requestId,
+          title: req.title,
+          status: req.status,
+          contract_number: contractNumber,
+          response_due: parseEbuyDate(req.dueBy),
+          raw_email: payload.TextBody ?? null,
+          parsed_fields: payload,
+        },
+        { onConflict: 'rfq_number' }
+      )
+
+    if (error) console.error(`Insert error for ${req.requestId}:`, error.message)
+  }
+
+  return NextResponse.json({ received: true, parsed: requests.length })
 }
