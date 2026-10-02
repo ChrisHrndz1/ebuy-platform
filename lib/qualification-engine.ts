@@ -16,6 +16,7 @@ export interface QualificationResult {
 export async function evaluateHardGates(opportunity: {
   contract_number: string | null
   naics_code: string | null
+  facility_clearance_required?: boolean | null
 }): Promise<QualificationResult> {
   const gates: GateResult[] = []
 
@@ -73,6 +74,28 @@ export async function evaluateHardGates(opportunity: {
   }
   gates.push(naicsGate)
 
+  let clearanceGate: GateResult
+  if (opportunity.facility_clearance_required === null || opportunity.facility_clearance_required === undefined) {
+    clearanceGate = {
+      gate: 'facility_clearance',
+      passed: null,
+      detail: 'Could not determine facility clearance requirement from available documents — requires manual review.',
+    }
+  } else if (opportunity.facility_clearance_required === true) {
+    clearanceGate = {
+      gate: 'facility_clearance',
+      passed: null,
+      detail: 'This opportunity requires a facility clearance (DD254 or clearance language detected) — verify company facility clearance status before proceeding.',
+    }
+  } else {
+    clearanceGate = {
+      gate: 'facility_clearance',
+      passed: true,
+      detail: 'No facility clearance requirement detected.',
+    }
+  }
+  gates.push(clearanceGate)
+
   const anyFailed = gates.some((g) => g.passed === false)
   const anyUnknown = gates.some((g) => g.passed === null)
 
@@ -96,12 +119,11 @@ export async function evaluateHardGates(opportunity: {
 export async function saveVerdict(
   opportunityId: string,
   result: QualificationResult,
-  opportunity: { title: string | null; raw_email: string | null; contract_number: string | null }
+  opportunity: { title: string | null; raw_email: string | null; contract_number: string | null; full_description?: string | null }
 ) {
   let softScore: number | null = null
   let combinedRationale = result.rationale
 
-  // Skip soft scoring for hard-disqualified opportunities — no point assessing fit on something ineligible
   if (result.verdict !== 'pass') {
     const soft = await computeSoftScore(opportunity)
     if (soft) {
@@ -116,6 +138,6 @@ export async function saveVerdict(
     hard_gate_results: result.hardGateResults,
     soft_score: softScore,
     rationale: combinedRationale,
-    engine_version: 'hard-gates-v1+soft-score-v1',
+    engine_version: 'hard-gates-v2+facility-clearance+soft-score-v1',
   })
 }

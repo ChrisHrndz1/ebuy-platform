@@ -1,18 +1,5 @@
 import { supabaseAdmin } from '@/lib/supabase-server'
-import OpportunityCard from '@/app/components/OpportunityCard'
-
-function getDueBadge(dueDate: string | null) {
-  if (!dueDate) return { label: 'no due date', urgent: false }
-
-  const now = new Date()
-  const due = new Date(dueDate)
-  const hoursLeft = (due.getTime() - now.getTime()) / (1000 * 60 * 60)
-
-  if (hoursLeft < 0) return { label: 'past due', urgent: false }
-  if (hoursLeft < 24) return { label: 'due today', urgent: true }
-  if (hoursLeft < 72) return { label: 'due in ' + Math.ceil(hoursLeft / 24) + 'd', urgent: true }
-  return { label: 'due in ' + Math.ceil(hoursLeft / 24) + 'd', urgent: false }
-}
+import OpportunityWorkspace from '@/app/components/OpportunityWorkspace'
 
 const VERDICT_PRIORITY: Record<string, number> = { pursue: 0, review: 1, pass: 3 }
 
@@ -93,33 +80,41 @@ export default async function Home({
     return active ? 'text-ink font-semibold underline' : 'text-ink/50 hover:text-ink'
   }
 
-  return (
-    <main className="max-w-3xl mx-auto px-6 py-10">
-      <h1 className="font-mono text-xl font-semibold">eBuy Opportunities</h1>
-      <p className="text-sm text-ink/60 mt-1">
-        Tracking {opportunities?.length ?? 0} opportunit{(opportunities?.length ?? 0) === 1 ? 'y' : 'ies'} across your contract vehicles.
-      </p>
+  const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })
 
-      <div className="flex font-mono text-sm border-y border-line mt-6">
-        <a href={buildHref({ verdict: 'pursue' })} className="flex-1 py-3 text-center hover:bg-pursue-bg">
+  return (
+    <div className="h-screen flex flex-col">
+      <header className="border-b border-line px-6 py-4 flex items-center justify-between shrink-0">
+        <div>
+          <h1 className="font-mono text-lg font-semibold">eBuy Opportunities</h1>
+          <p className="text-xs text-ink/50 mt-0.5">{today}</p>
+        </div>
+        <div className="text-right">
+          <div className="font-mono text-xl font-semibold">{opportunities?.length ?? 0}</div>
+          <div className="text-xs text-ink/50">tracked</div>
+        </div>
+      </header>
+
+      <div className="flex font-mono text-sm border-b border-line shrink-0">
+        <a href={buildHref({ verdict: 'pursue' })} className="flex-1 py-2.5 text-center hover:bg-pursue-bg transition-colors">
           <span className="text-pursue font-semibold">{counts.pursue}</span>
           <span className="text-ink/50"> pursue</span>
         </a>
-        <a href={buildHref({ verdict: 'review' })} className="flex-1 py-3 text-center border-l border-line hover:bg-review-bg">
+        <a href={buildHref({ verdict: 'review' })} className="flex-1 py-2.5 text-center border-l border-line hover:bg-review-bg transition-colors">
           <span className="text-review font-semibold">{counts.review}</span>
           <span className="text-ink/50"> review</span>
         </a>
-        <a href={buildHref({ verdict: 'pass' })} className="flex-1 py-3 text-center border-l border-line hover:bg-pass-bg">
+        <a href={buildHref({ verdict: 'pass' })} className="flex-1 py-2.5 text-center border-l border-line hover:bg-pass-bg transition-colors">
           <span className="text-pass font-semibold">{counts.pass}</span>
           <span className="text-ink/50"> pass</span>
         </a>
-        <a href={buildHref({ verdict: undefined })} className="flex-1 py-3 text-center border-l border-line hover:bg-ink/5">
+        <a href={buildHref({ verdict: undefined })} className="flex-1 py-2.5 text-center border-l border-line hover:bg-ink/5 transition-colors">
           <span className="font-semibold">{enriched.length}</span>
           <span className="text-ink/50"> all</span>
         </a>
       </div>
 
-      <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm mt-4">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm px-6 py-2.5 border-b border-line shrink-0">
         <a href={buildHref({ filter: undefined, contract: undefined, verdict: undefined })} className={textToggle(!params.contract && !params.filter && !params.verdict)}>
           all
         </a>
@@ -131,23 +126,15 @@ export default async function Home({
             {c}
           </a>
         ))}
+        <span className="ml-auto flex gap-x-3 text-ink/40">
+          <span>sort:</span>
+          <a href={buildHref({ sort: 'priority' })} className={textToggle(sortMode === 'priority')}>priority</a>
+          <a href={buildHref({ sort: 'due' })} className={textToggle(sortMode === 'due')}>due</a>
+          <a href={buildHref({ sort: 'fit' })} className={textToggle(sortMode === 'fit')}>fit</a>
+        </span>
       </div>
 
-      <div className="flex gap-x-4 text-sm text-ink/50 mt-2">
-        <span>sort:</span>
-        <a href={buildHref({ sort: 'priority' })} className={textToggle(sortMode === 'priority')}>priority</a>
-        <a href={buildHref({ sort: 'due' })} className={textToggle(sortMode === 'due')}>due date</a>
-        <a href={buildHref({ sort: 'fit' })} className={textToggle(sortMode === 'fit')}>fit score</a>
-      </div>
-
-      <div className="mt-6 border-t border-line">
-        {enriched.map(({ opp, verdict }) => (
-          <OpportunityCard key={opp.id} opp={opp} verdict={verdict} dueBadge={getDueBadge(opp.response_due)} />
-        ))}
-        {enriched.length === 0 && (
-          <div className="text-ink/50 text-sm py-8 text-center">No opportunities match this filter.</div>
-        )}
-      </div>
-    </main>
+      <OpportunityWorkspace enriched={enriched} />
+    </div>
   )
 }

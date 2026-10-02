@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+ebuy-page-dump.html
+ebuy-page-detail.png
+ebuy-session-contract-1.json
+ebuy-listing-dump.html
+ebuy-listing-screenshot.png
+ebuy-extracted-rows.json
+ebuy-full-scrape-test.json
+ebuy-detail-*.html
+ebuy-detail-with-attachments-*.html

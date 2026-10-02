@@ -1,0 +1,117 @@
+{
+  "cookies": [
+    {
+      "name": "_ga",
+      "value": "GA1.1.1628667668.1790630076",
+      "domain": ".gsa.gov",
+      "path": "/",
+      "expires": 1825190215.143134,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "DT",
+      "value": "DI19obTG9awSC2Gquk8hRfqUA",
+      "domain": "mfalogin.fas.gsa.gov",
+      "path": "/",
+      "expires": 1825190080.30021,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "oktaStateToken",
+      "value": "00yAaKW5m-TGITm6Al8DoZorAn4z9YX3CZm9x_4V0P",
+      "domain": "mfalogin.fas.gsa.gov",
+      "path": "/",
+      "expires": 1790630513,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "xids",
+      "value": "1021AWfIWP2TfiL_63cUx3LFw",
+      "domain": "mfalogin.fas.gsa.gov",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "sid",
+      "value": "102cPCZgS_zQ7aXeJYTz4LkBg",
+      "domain": "mfalogin.fas.gsa.gov",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "JSESSIONID",
+      "value": "90E925D71ECA53D87364A6ADB8ABAED1",
+      "domain": "mfalogin.fas.gsa.gov",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_ga_JZ7P346TVM",
+      "value": "GS2.1.s1790630076$o1$g1$t1790630268$j7$l0$h0",
+      "domain": ".gsa.gov",
+      "path": "/",
+      "expires": 1825190268.476389,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "_ga_CSLL4ZEK4L",
+      "value": "GS2.1.s1790630076$o1$g1$t1790630268$j7$l0$h0",
+      "domain": ".gsa.gov",
+      "path": "/",
+      "expires": 1825190268.488497,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "_ga_HBYXWFP794",
+      "value": "GS2.1.s1790630076$o1$g1$t1790630268$j7$l0$h0",
+      "domain": ".gsa.gov",
+      "path": "/",
+      "expires": 1825190268.49505,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://www.ebuy.gsa.gov",
+      "localStorage": [
+        {
+          "name": "id_token",
+          "value": "eyJraWQiOiJXazlOdWRMei12ZlktZUVNRV91NHI1ODJIdkItM0V5STJHNnhaZHRKWWlzIiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiIwMHUxM3M0N21hcWJmV0RHVzI5OCIsIm5hbWUiOiJDaHJpc3RvcGhlciBIZXJuYW5kZXogQ2hyaXN0b3BoZXIgSGVybmFuZGV6IiwiZW1haWwiOiJjaHJpc3RvcGhlci5oZXJuYW5kZXpAZXRlbGxpZ2VudC1ncm91cC5jb20iLCJ2ZXIiOjEsImlzcyI6Imh0dHBzOi8vbWZhbG9naW4uZmFzLmdzYS5nb3Yvb2F1dGgyL2F1czRnNmd0dDNobmRBelpxMjk3IiwiYXVkIjoiMG9hNTVteTVibDJITnI5R0MyOTciLCJpYXQiOjE3OTA2MzAyMTUsImV4cCI6MTc5MDYzMzgxNSwianRpIjoiSUQuUjNzMWwzN3RSYTZ2X3N4TUxxTDF6bVRMWi1JY012SE0tTVZOZ3NRUjVMRSIsImFtciI6WyJtZmEiLCJvdHAiLCJwd2QiXSwiaWRwIjoiMDBvMWN2NGZ1YU9hTlFWZGEyOTciLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJjaHJpc3RvcGhlci5oZXJuYW5kZXpAZXRlbGxpZ2VudC1ncm91cC5jb20iLCJhdXRoX3RpbWUiOjE3OTA2MzAxNzUsImF0X2hhc2giOiJRVXIxQ3dQelAxTkpKX0NCc3c3MTZBIn0.YktJ6mH4m7IzxRC1I0z3qmtykv3ptp7DOpQOLTdYdPbab7AhMv3iDBe2SqJUAn2FH-bEA9v7ka6JDp6OEbOiH5BOLhQTtl3sdnhfs51zFgsh58h_65iLU2Xkd_2lmVYD1Q-4IKZYGn684KgbcJ5iUpqiyRRYx5w06I_bP7RsIfkI8aCFOsjoVSxb_paD-QZQUN36PqVAW8yqQ0Qr_FU5eDchQS9KvbtOQio-JifwYBiCwN62WPcjMq95kE7oR4bBRV92NvCrZzNwSsli9PNlLpZ1fUaniRyVWwU1gESiqufDscqBP0jCQL-gzsxIpW-YZ_urGWWnqjwI0SAZf7VLtA"
+        },
+        {
+          "name": "access_token",
+          "value": "eyJraWQiOiJXazlOdWRMei12ZlktZUVNRV91NHI1ODJIdkItM0V5STJHNnhaZHRKWWlzIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULkt0NUU2OVlKcTRCb1NVbTh4d1diU3F6ZE80UWFRMi1ycER2dEFFSW4tSzgiLCJpc3MiOiJodHRwczovL21mYWxvZ2luLmZhcy5nc2EuZ292L29hdXRoMi9hdXM0ZzZndHQzaG5kQXpacTI5NyIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE3OTA2MzAyMTUsImV4cCI6MTc5MDYzMzgxNSwiY2lkIjoiMG9hNTVteTVibDJITnI5R0MyOTciLCJ1aWQiOiIwMHUxM3M0N21hcWJmV0RHVzI5OCIsInNjcCI6WyJwcm9maWxlIiwib3BlbmlkIiwiZW1haWwiXSwiYXV0aF90aW1lIjoxNzkwNjMwMTc1LCJzdWIiOiJjaHJpc3RvcGhlci5oZXJuYW5kZXpAZXRlbGxpZ2VudC1ncm91cC5jb20ifQ.KwefuSd48X3U36TRSoDb--dFLuh9czIkzajrvllXWqaQcQnSLwSrB-7Ljm5a7_FE2RRja0jA1HBXVqoerdlcQcJO6Pza6Bms_4z5IlaxSWYRxQM6RArytcOyf3nrphx4DTEh7s79LZZ9bSwI7MHMj9E83_9Bho-3Agw7q6ZCg9NzUBNfHEvXDllR07e9flQCra4TpiCmlK8lmwIJPVlpxJKjVnQIZ-a7ZmFdnewRnmRFhj0RwOTIxTtpT1k3dIv5kagf98LSHyMw_bXmvmehaYH_hsofV0N_4C8qkrrR9lDdBvs5S0URWnUWGheS2puZssI7QxPdMteGOQZFGFPIvw"
+        },
+        {
+          "name": "eBuyLoginState",
+          "value": "{\"state\":\"authenticated\",\"user\":{\"userData\":{\"firstName\":\"Rohit\",\"lastName\":\"Aggarwal\",\"phone\":\"7039891847\",\"agencyCode\":\"\",\"bureauCode\":\"\",\"emailAddress\":\"rohita@etelligent-group.com\",\"address\":\"\",\"zipCode\":\"\",\"state\":\"\",\"userID\":\"47QRCA26DSG19\",\"password\":null,\"faxNumber\":\"\",\"passwordHintQuestion\":\"\",\"passwordHint\":\"\",\"orderStatusUpdate\":false,\"orderStatusEmailContent\":0,\"orderStatusEmailFormat\":0,\"newsAlerts\":false,\"sasCode\":\"\",\"dodAAC\":\"\",\"skipAacPrompt\":false,\"visitorID\":2875995,\"position\":\"\",\"stateOrganization\":\"\",\"stateOrganizationLevel2\":\"\",\"stateOrganizationLevel3\":\"\",\"stateAddress1\":\"\",\"stateAddress2\":\"\",\"organizationCity\":\"\",\"organizationState\":\"\",\"organizationCounty\":\"\",\"govEmployee\":\"\",\"storeId\":0,\"userType\":\"EBUYVENDOR\",\"dhsPromptFlag\":0,\"userState\":0,\"orgZip\":\"\",\"duns\":null,\"contractNumber\":\"47QRCA26DSG19\",\"companyName\":\"ETELLIGENT GROUP LLC\",\"lastModTime\":1761019200000,\"purchasingUserFlag\":false,\"emailVerificationState\":0,\"emailApprovalCode\":0,\"emailApprovalExpiration\":null,\"pwdResetRequired\":false,\"lastPasswordResetTime\":null,\"passwordReset\":false,\"masterContract\":\"47QRCA26DSG19\",\"sellerContainer\":{\"masterContract\":{\"contractNumber\":\"47QRCA26DSG19\",\"contractExpired\":false,\"subcategoryStatus\":0,\"contractType\":2,\"vendorCategories\":null,\"sinList\":[\"10101\",\"10102\",\"10103\",\"10104\",\"10105\",\"10106\",\"10107\",\"10108\",\"10201\",\"10202\",\"10203\",\"10205\",\"10206\",\"10207\",\"10208\",\"10210\",\"10211\",\"10212\",\"10213\",\"10214\",\"10215\",\"10216\",\"10301\",\"10302\",\"10303\",\"10304\",\"10305\",\"10306\",\"10307\",\"10308\",\"10309\",\"10310\",\"10311\",\"10312\",\"10313\",\"10314\",\"10315\",\"10316\"],\"contractSuspended\":false,\"contractLockedDown\":false,\"contractClosed\":false,\"contractExists\":true},\"associatedContracts\":[],\"subcatUpdate\":false,\"associatedMobiles\":[],\"bpas\":[],\"allContracts\":[{\"contractNumber\":\"47QRCA26DSG19\",\"contractExpired\":false,\"subcategoryStatus\":0,\"contractType\":2,\"vendorCategories\":null,\"sinList\":[\"10101\",\"10102\",\"10103\",\"10104\",\"10105\",\"10106\",\"10107\",\"10108\",\"10201\",\"10202\",\"10203\",\"10205\",\"10206\",\"10207\",\"10208\",\"10210\",\"10211\",\"10212\",\"10213\",\"10214\",\"10215\",\"10216\",\"10301\",\"10302\",\"10303\",\"10304\",\"10305\",\"10306\",\"10307\",\"10308\",\"10309\",\"10310\",\"10311\",\"10312\",\"10313\",\"10314\",\"10315\",\"10316\"],\"contractSuspended\":false,\"contractLockedDown\":false,\"contractClosed\":false,\"contractExists\":true}]},\"homeOfficeAddressOptionEnabled\":false,\"reportAccessEnabled\":false,\"airForceCommunity\":false,\"stateLocalUser\":false,\"formattedLastModTime\":\"Oct 21, 2025\",\"arcUser\":false,\"usoUser\":false}},\"authorizationCode\":0,\"jwtToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkYTYzODdjMDEwNTk0MDY3YjU2MjA1ZTEwMjYzNjA4MCIsImlhdCI6MTc5MDYzMDIyOC43MDI0OTUzLCJleHAiOjE3OTA2MzIwMjguNzAyNDk1MywiZGF0YSI6IntcInVzZXJcIjogXCI0N1FSQ0EyNkRTRzE5XCIsIFwidXNlcl9pZFwiOiAyODc1OTk1LCBcInN0b3JlX2lkXCI6IFwiMFwiLCBcInVzZXJfdHlwZVwiOiBcIkVCVVlWRU5ET1ItR1dBQ1wiLCBcInNhc19jb2RlXCI6IFwiMDBcIiwgXCJhdXRob3JpemF0aW9uX2NvZGVcIjogMCwgXCJjbGllbnRfbG9nZ2VkX2luX2lfcF9hZGRyZXNzXCI6IFwiMTczLjY3LjE5OC40OFwifSIsInJjbnQiOjB9.PEphtUdyuii1QYJRPbLnqDbwYG1rikJ0WxB9W1fhbnU\"}"
+        },
+        {
+          "name": "userAcknowledge",
+          "value": "true"
+        }
+      ]
+    }
+  ]
+}
