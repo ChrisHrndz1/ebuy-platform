@@ -5,7 +5,7 @@ export interface SoftScoreResult {
   rationale: string
 }
 
-const GEMINI_MODEL = 'gemini-2.5-flash'
+const GEMINI_MODEL = 'gemini-3.8-flash'
 
 export async function computeSoftScore(opportunity: {
   title: string | null
