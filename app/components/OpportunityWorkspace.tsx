@@ -15,6 +15,9 @@ interface Opportunity {
   full_description: string | null
   attachments: string[] | null
   facility_clearance_required: boolean | null
+  naics_code: string | null
+  set_aside_type: string | null
+  place_of_performance: string | null
 }
 
 interface Verdict {
@@ -184,6 +187,26 @@ function DetailPanel({ opp, verdict, onBack }: { opp: Opportunity; verdict: Verd
             <span className="text-xs px-2 py-1 rounded-full bg-review-bg text-review flex items-center gap-1">
               <ShieldIcon className="w-3 h-3" /> facility clearance required
             </span>
+          )}
+        </div>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 text-sm">
+          {opp.set_aside_type && (
+            <div>
+              <div className="text-xs text-ink/40">Set-aside</div>
+              <div>{opp.set_aside_type}</div>
+            </div>
+          )}
+          {opp.naics_code && (
+            <div>
+              <div className="text-xs text-ink/40">NAICS (detected)</div>
+              <div className="font-mono">{opp.naics_code}</div>
+            </div>
+          )}
+          {opp.place_of_performance && (
+            <div className="col-span-2">
+              <div className="text-xs text-ink/40">Place of performance</div>
+              <div>{opp.place_of_performance}</div>
+            </div>
           )}
         </div>
 

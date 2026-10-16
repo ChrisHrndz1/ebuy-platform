@@ -84,13 +84,32 @@ async function extractDetail(page: Page, requestId: string) {
     )
     .catch(() => [] as string[])
 
-  return { description, attachmentLinks }
+  const placeOfPerformanceParts = await page
+    .$$eval('#rfq-display-shipping-addresses-wrap address', (addrs) =>
+      addrs.map((a) => (a.textContent || '').replace(/\s+/g, ' ').trim()).filter(Boolean)
+    )
+    .catch(() => [] as string[])
+  const placeOfPerformance = placeOfPerformanceParts.length > 0 ? placeOfPerformanceParts.join('; ') : null
+
+  return { description, attachmentLinks, placeOfPerformance }
 }
 
 function detectFacilityClearance(attachmentNames: string[], description: string): boolean {
   const hasDD254 = attachmentNames.some((a) => /DD\s*-?\s*254/i.test(a))
   if (hasDD254) return true
   return /facility clearance|DD254|DD-254|secret facility|top secret facility/i.test(description)
+}
+
+function extractNaicsCode(description: string): string | null {
+  const match = description.match(/NAICS(?:\s+code)?s?\s*:?\s*#?\s*(\d{6})/i)
+  return match ? match[1] : null
+}
+
+function deriveSetAsideType(listingSource: string): string | null {
+  if (!listingSource) return null
+  if (/SB$/i.test(listingSource)) return 'Small Business Set-Aside'
+  if (/UNR$/i.test(listingSource)) return 'Unrestricted'
+  return listingSource
 }
 
 function parseListingDate(dateStr: string): string | null {
@@ -131,6 +150,8 @@ async function run() {
       console.log('Processing ' + row.requestId + ': ' + row.title)
       const detail = await extractDetail(page, row.requestId)
       const facilityClearanceRequired = detectFacilityClearance(detail.attachmentLinks, detail.description)
+      const naicsCode = extractNaicsCode(detail.description)
+      const setAsideType = deriveSetAsideType(row.source)
 
       const { data, error } = await supabaseAdmin
         .from('opportunities')
@@ -144,6 +165,9 @@ async function run() {
             full_description: detail.description,
             attachments: detail.attachmentLinks,
             facility_clearance_required: facilityClearanceRequired,
+            naics_code: naicsCode,
+            set_aside_type: setAsideType,
+            place_of_performance: detail.placeOfPerformance,
             source: 'ebuy_scrape',
             parsed_fields: {
               buyerName: row.buyerName,
