@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import { fetchDocuments } from './fetch-documents'
 import * as path from 'path'
 import { chromium, Page } from 'playwright'
 
@@ -21,6 +22,7 @@ function loadEnvLocal() {
   })
 }
 loadEnvLocal()
+process.env.SOFT_SCORE_PATIENT = '1'
 
 const CONTRACT_NUMBER = '47QRCA26DSG19'
 const SESSION_FILE = 'ebuy-session-contract-1.json'
@@ -187,6 +189,9 @@ async function run() {
         failed++
         continue
       }
+
+      const docSummary = await fetchDocuments(page, supabaseAdmin, data.id)
+      console.log('  Documents: ' + docSummary)
 
       const result = await evaluateHardGates(data)
       await saveVerdict(data.id, result, data)

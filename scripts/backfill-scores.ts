@@ -41,7 +41,9 @@ async function run() {
     if (!latestByOpp.has(v.opportunity_id)) latestByOpp.set(v.opportunity_id, v)
   })
 
+  const force = process.argv.includes('--force')
   const todo = opportunities.filter((o) => {
+    if (force) return true
     const v = latestByOpp.get(o.id)
     return !v || (v.soft_score === null && v.verdict !== 'pass')
   })

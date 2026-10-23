@@ -119,13 +119,24 @@ export async function evaluateHardGates(opportunity: {
 export async function saveVerdict(
   opportunityId: string,
   result: QualificationResult,
-  opportunity: { title: string | null; raw_email: string | null; contract_number: string | null; full_description?: string | null }
+  opportunity: {
+    title: string | null
+    raw_email: string | null
+    contract_number: string | null
+    full_description?: string | null
+    response_due?: string | null
+    naics_code?: string | null
+    set_aside_type?: string | null
+    place_of_performance?: string | null
+    attachments?: string[] | null
+  }
 ) {
   let softScore: number | null = null
+  let soft: Awaited<ReturnType<typeof computeSoftScore>> = null
   let combinedRationale = result.rationale
 
   if (result.verdict !== 'pass') {
-    const soft = await computeSoftScore(opportunity)
+    soft = await computeSoftScore({ ...opportunity, id: opportunityId })
     if (soft) {
       softScore = soft.score
       combinedRationale = result.rationale + ' | Fit assessment: ' + soft.rationale
@@ -138,6 +149,13 @@ export async function saveVerdict(
     hard_gate_results: result.hardGateResults,
     soft_score: softScore,
     rationale: combinedRationale,
-    engine_version: 'hard-gates-v2+facility-clearance+soft-score-v1',
+    value_low: soft?.valueLow ?? null,
+    value_high: soft?.valueHigh ?? null,
+    value_basis: soft?.valueBasis ?? null,
+    value_note: soft?.valueNote ?? null,
+    lift_level: soft?.liftLevel ?? null,
+    lift_notes: soft?.liftNotes ?? null,
+    fit_gaps: soft?.gaps ?? null,
+    engine_version: 'hard-gates-v2+facility-clearance+fit-value-lift-v1',
   })
 }

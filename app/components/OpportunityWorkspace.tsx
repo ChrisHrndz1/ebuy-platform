@@ -25,6 +25,27 @@ interface Verdict {
   rationale: string
   soft_score: number | null
   hard_gate_results: { gate: string; passed: boolean | null; detail: string }[]
+  value_low?: number | null
+  value_high?: number | null
+  value_basis?: string | null
+  value_note?: string | null
+  lift_level?: string | null
+  lift_notes?: string | null
+  fit_gaps?: string[] | null
+}
+
+function money(n: number) {
+  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(n >= 10_000_000 ? 0 : 1) + 'M'
+  if (n >= 1_000) return '$' + Math.round(n / 1_000) + 'K'
+  return '$' + Math.round(n)
+}
+
+function valueLabel(v: Verdict) {
+  if (v.value_low == null && v.value_high == null) return 'Unknown'
+  const lo = v.value_low ?? v.value_high!
+  const hi = v.value_high ?? v.value_low!
+  const range = lo === hi ? money(lo) : money(lo) + ' to ' + money(hi)
+  return (v.value_basis === 'estimated' ? '~' : '') + range
 }
 
 interface Props {
@@ -218,6 +239,36 @@ function DetailPanel({ opp, verdict, onBack }: { opp: Opportunity; verdict: Verd
           </button>
         </form>
       </div>
+
+      {verdict && verdict.soft_score != null && (
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          <div className="bg-white rounded-lg shadow-sm border border-line p-4">
+            <div className="text-xs text-ink/40">Fit</div>
+            <div className="text-2xl font-semibold font-mono">{verdict.soft_score}<span className="text-sm text-ink/40">/100</span></div>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border border-line p-4">
+            <div className="text-xs text-ink/40">Value {verdict.value_basis === 'estimated' ? '(estimate)' : verdict.value_basis === 'stated' ? '(stated)' : ''}</div>
+            <div className="text-2xl font-semibold font-mono">{valueLabel(verdict)}</div>
+            {verdict.value_note && <div className="text-xs text-ink/50 mt-1">{verdict.value_note}</div>}
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border border-line p-4">
+            <div className="text-xs text-ink/40">Lift</div>
+            <div className="text-2xl font-semibold capitalize">{verdict.lift_level ?? 'unknown'}</div>
+            {verdict.lift_notes && <div className="text-xs text-ink/50 mt-1">{verdict.lift_notes}</div>}
+          </div>
+        </div>
+      )}
+
+      {verdict && verdict.fit_gaps && verdict.fit_gaps.length > 0 && (
+        <div className="mt-4 bg-white rounded-lg shadow-sm border border-line p-6">
+          <h3 className="text-sm font-semibold text-ink/70 mb-3">Capability gaps</h3>
+          <ul className="list-disc pl-5 space-y-1 text-sm text-ink/80">
+            {verdict.fit_gaps.map((g, i) => (
+              <li key={i}>{g}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {verdict && (
         <div className="mt-4 bg-white rounded-lg shadow-sm border border-line p-6">

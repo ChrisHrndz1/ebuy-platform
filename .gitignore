@@ -48,3 +48,6 @@ ebuy-extracted-rows.json
 ebuy-full-scrape-test.json
 ebuy-detail-*.html
 ebuy-detail-with-attachments-*.html
+
+# eBuy login sessions (never commit)
+ebuy-session*.json
